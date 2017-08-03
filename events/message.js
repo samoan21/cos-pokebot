@@ -17,13 +17,16 @@ module.exports = (client, message) => {
   // to the message object, so `message.settings` is accessible.
   message.settings = settings;
 
-  // Grab the blacklist for the guild the message came from.
-  const blacklist = client.blacklist.get(message.guild.id);
+  // We need to make sure we're in a guild before trying to load a blacklist.
+  if (message.guild) {
 
-  // We want to see if the blacklist has our message author on it,
-  // and if it does, we want to ignore them.
-  if (blacklist.includes(message.author.id)) return;
+    // Grab the blacklist for the guild the message came from.
+    const blacklist = client.blacklist.get(message.guild.id);
 
+    // We want to see if the blacklist has our message author on it,
+    // and if it does, we want to ignore them.
+    if (blacklist.includes(message.author.id)) return;
+  }
   // Also good practice to ignore any message that does not start with our prefix,
   // which is set in the configuration file.
   if (message.content.indexOf(settings.prefix) !== 0) return;

@@ -1,7 +1,7 @@
 exports.run = (client, message, args, level) => {
   if (!args[0]) {
-    const settings = client.settings.get(message.guild.id);
-    const myCommands = client.commands.filter(c=>c.conf.permLevel <= level);
+    const settings = message.guild ? client.settings.get(message.guild.id) : client.config.defaultSettings;
+    const myCommands = client.commands.filter(c=>c.conf.permLevel <= level && c.conf.guildOnly !== true);
     const commandNames = myCommands.keyArray();
     const longest = commandNames.reduce((long, str) => Math.max(long, str.length), 0);
     let currentCategory = "";
